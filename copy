@@ -1,0 +1,1477 @@
+
+
+<head>
+    <title>Bliyzer</title>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="theme-color" content="#090A1F">
+	<meta property="og:title" content="Bliyzer - Cryptocurrency mining">
+    <meta property="og:description" content="Bliyzer is a brand new mining platform">
+    <meta property="og:url" content="Bliyzer">
+    <meta property="og:image" content="/images/banner.png">
+    <meta property="og:site_name" content="Bliyzer">
+    <meta property="og:locale" content="en_EN">
+  
+  
+  <!-- recaptcha -->
+  <script src="https://www.google.com/recaptcha/api.js"></script>
+  <script src="/js/mainscript.js"></script>
+  <script src="/js/main.js" ></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.0/rangeslider.min.js"></script>
+  <link rel="stylesheet" href="css/rangeslider.css">
+  
+  
+
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#fd8037">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css?838434234">
+  
+</head>
+
+
+
+	
+
+	<script type="text/javascript">
+			
+			$(window).ready(function() {
+			
+            $("#Login").submit(function(e){
+                e.preventDefault();
+
+                var email = $("#login-email").val();
+				var password = $("#login-pass").val();
+
+                $.ajax({
+                    url: '/augh/login.php',
+                    type: "POST",
+                    data: "email=" + email + "&password=" + password + "&g-recaptcha-response=" + grecaptcha.getResponse(0),
+                    success: function(data) {
+                        if (!data.success) {
+							$("#login-error").text(data.message);	
+							console.log(data.success);
+                            grecaptcha.reset(0);
+							if (data.code == 2)
+							{
+								grecaptcha.reset(0);	
+							}
+						
+						} 
+						else if (data.success)
+							{
+								console.log(data.success);
+								document.location = "/dashboard";
+							}
+						
+                    }
+                })
+            });
+			
+			});
+				
+	</script>
+  <script type="text/javascript">
+  
+			$(window).ready(function() {
+			
+            $("#Registration").submit(function(e){
+                e.preventDefault();
+
+                var email 		= $("#reg-email").val();
+				var login 		= $("#reg-login").val();
+				var password 	= $("#reg-pass").val();
+				var password_2 	= $("#reg-pass-2").val();
+				
+
+                $.ajax({
+                    url: '/augh/signup.php',
+                    type: "POST",
+                    data: "email=" + email + "&login=" + login + "&password=" + password + "&password_2=" + password_2 + "&g-recaptcha-response=" + grecaptcha.getResponse(1),
+                    success: function(data) {
+                        if (!data.success) {
+							$("#reg-error").text(data.message);	
+							console.log(data.success);
+                            grecaptcha.reset(1);	
+							if (data.code == 2)
+							{
+								grecaptcha.reset(1);	
+							}
+						
+						} 
+						else if (data.success)
+							{
+								console.log(data.success);
+								document.location = "/dashboard";
+							}
+						
+                    }
+                })
+            });
+			
+			});
+			
+			</script>
+			
+			<script type="text/javascript">
+			
+			$(window).ready(function() {
+			
+            $("#Recovery").submit(function(e){
+                e.preventDefault();
+
+                var email = $("#rec-email").val();
+				
+                $.ajax({
+                    url: '/augh/recover.php',
+                    type: "POST",
+                    data: "email=" + email  + "&g-recaptcha-response=" + grecaptcha.getResponse(2),
+                    success: function(data) {
+                        if (!data.success) {
+							$("#rec-error").text(data.message);	
+							
+                            grecaptcha.reset(2);	
+							if (data.code == 2)
+							{
+								grecaptcha.reset(2);	
+							}
+						
+						} 
+						else if (data.success)
+							{
+								$("#rec-error").text(data.message);	
+								console.log(data.success);
+								//document.location = "/";
+							}
+						
+                    }
+                })
+            });
+			
+			$(".default__btn_forget").click(function () {
+				$(".modal__sign-in").removeClass("visible");
+				$(".modal__recover").addClass("visible");
+			});
+			
+			
+			});
+			
+			
+			
+			</script>
+  
+  <script>
+	
+		
+	$(window).ready(function() {
+		
+
+		function loadData() {
+		  return new Promise((resolve, reject) => {
+			setTimeout(resolve, 500);
+		  })
+		}
+
+		loadData()
+		  .then(() => {
+			let preloaderEl = document.getElementById('overlay');
+			$('#overlay').fadeOut("fast");
+		  });
+	
+		
+		
+		
+		url = window.location.pathname.substring(1);
+		var body = document.body;
+		//alert(url);
+		
+		switch(url) {
+			
+			case 'about':
+				body.classList.add("about-bg");
+			break;
+			
+			case 'news':
+				body.classList.add("main-bg");
+			break;
+			
+			case 'support':
+				body.classList.add("support-bg");
+			break;
+			
+			case 'partners':
+				body.classList.add("partners-bg");
+			break;
+			
+			case 'marketing':
+				body.classList.add("main-bg");
+			break;
+			
+			case 'statistics':
+				body.classList.add("main-bg");
+			break;
+			
+			case 'mining':
+				body.classList.add("mining-bg");
+			break;
+			
+			case 'account':
+				body.classList.add("account-bg");
+			break;
+			
+			case 'reward':
+				body.classList.add("account-bg");
+			break;
+			
+			case 'purchase':
+				body.classList.add("account-bg");
+			break;
+			
+			case 'history':
+				body.classList.add("account-bg");
+			break;
+			
+			default:
+				body.classList.add("section-bg");
+			break;
+			
+		}      
+		
+		$(".profile-name.title").text(url)
+		
+	});
+	
+	
+	
+		
+		
+	</script>
+	
+<header class="header__mining">
+    <div class="header__section">
+        <div class="header__logotype"><a href="/mining">Bliyzer</a></div>
+        <nav class="main__navigation">
+            <ul class="nav__list">
+                <li><a href="#how_it-work">How it works</a></li>
+                <li><a href="#crypto__calculator">Calculator</a></li>
+                <li><a href="#get__reward">Referral</a></li>
+                <li><a href="#price__section">Pricing</a></li>
+                <li><a href="#faq__section">FAQ</a></li>
+            </ul>
+        </nav>
+        <div class="user__section-nav">
+            <ul class="user__navigation">
+                                <li class="user__sign-section">
+                    <div class="user__sin-ing-button"><span>Sign in</span></div>
+                </li>
+                                <li>
+                    <div class="button__navigation"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="main__screen" data-aos="animation">
+    <div class="main__screen-article">
+        <div class="main__screen-content">
+            <div class="main__title-label">MOST TRUSTED</div>
+            <h1>CRYPTO MINING<br> PLATFORM</h1>
+            <p>From 2%-6% Daily income in Bitcoin, Ethereum, Ripple, Litecoin and other cryptocurrencies. Start mining right now!</p>
+
+                        <h2>Sign up bonus $5 in Miners</h2>
+            <div class="main__screen-button">
+                <span class="sign__up-button">Get Started</span>
+                <a class="telegram tsupp" href="https://t.me/Bliyzer_Support"></a>
+                <a class="telegram tgrope" href="https://t.me/Bliyzer_News"></a>
+            </div>
+            
+        </div>
+        <div class="main__screen-info_pics">
+            <div class="screen__three-column">
+                <div class="screen__monetB-item"></div>
+                <div class="screen__monetBa-item"></div>
+                <div class="screen__monetC-item"></div>
+                <div class="screen__monetCa-item"></div>
+                <div class="screen__monetA-item"></div>
+                <div class="screen__portalA-item"></div>
+                <div class="screen__item-column left"> </div>
+                <div class="screen__item-column center"> </div>
+                <div class="screen__item-column right"> </div>
+            </div>
+        </div>
+    </div>
+</div>
+<article class="main__article-content">
+    <ul class="main__board-info" data-aos="animation">
+        <li class="board__item">
+            <div class="board__card-content">
+                <div class="board__icon-item icon__bord1"></div>
+                <div class="board__item-title">
+                    <span class="board__item-label">Users count</span>
+                    <span class="board__item-text">61068</span>
+                </div>
+            </div>
+        </li>
+        <li class="board__item">
+            <div class="board__card-content">
+                <div class="board__icon-item icon__bord2"></div>
+                <div class="board__item-title">
+                    <span class="board__item-label">Paid to users</span>
+                    <span class="board__item-text">$ 817.01</span>
+                </div>
+            </div>
+        </li>
+        <li class="board__item">
+            <div class="board__card-content">
+                <div class="board__icon-item icon__bord3"></div>
+                <div class="board__item-title">
+                    <span class="board__item-label">Days worked</span>
+                    <span class="board__item-text">6</span>
+                </div>
+            </div>
+        </li>
+        <li class="board__item">
+            <div class="board__card-content">
+                <div class="board__icon-item icon__bord4"></div>
+                <div class="board__item-title">
+                    <span class="board__item-label">User deposits</span>
+                    <span class="board__item-text">$ 9951.96</span>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <section id="how_it-work" data-aos="animation">
+        <h3>How it works</h3>
+        <p>Discover the various features that make our platform the best place to start trading</p>
+        <ul class="hiw__list-section">
+            <li class="hiw__item">
+                <div class="hiw__body-content">
+                    <div class="hiw__item-icon hiw__icon1">
+                        <div class="hiw__iconA"></div>
+                        <div class="hiw__iconAa"></div>
+                    </div>
+                    <div class="hiw__item-title">Register</div>
+                    <div class="hiw__text">
+                        <p>Complete a simple registration form, which will take a few seconds, after which you will be
+                            users of all the features of the project.</p>
+                    </div>
+                </div>
+            </li>
+            <li class="hiw__item">
+                <div class="hiw__body-content">
+                    <div class="hiw__item-icon hiw__icon2">
+                        <div class="hiw__iconB"></div>
+                        <div class="hiw__iconBa"></div>
+                    </div>
+                    <div class="hiw__item-title">Beginning of work</div>
+                    <div class="hiw__text">
+                        <p>After registration, go to the balance tab, replenish your account in a way convenient for
+                            you, and start mining in a couple of seconds.</p>
+                    </div>
+                </div>
+            </li>
+            <li class="hiw__item">
+                <div class="hiw__body-content">
+                    <div class="hiw__item-icon hiw__icon3">
+                        <div class="hiw__iconC"></div>
+                        <div class="hiw__iconCa"></div>
+                    </div>
+                    <div class="hiw__item-title">Profit withdrawal</div>
+                    <div class="hiw__text">
+                        <p>After reaching the minimum amount for withdrawal, you can issue a withdrawal by filling out a
+                            short form.</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <section id="crypto__available" data-aos="animation">
+        <div class="ca__content-box">
+            <div class="ca__content-text-column">
+                <div class="ca__column-contauner">
+                    <h3>Cryptocurrencies available</h3>
+                    <ul>
+                        <li><a href="#">Bitcoin</a></li>
+                        <li><a href="#">Ethereum</a></li>
+                        <li><a href="#">BitcoinCash</a></li>
+                        <li><a href="#">Tron</a></li>
+                        <li><a href="#">Shiba</a></li>
+                        <li><a href="#">EthClassic</a></li>
+                        <li><a href="#">Cardano</a></li>
+                        <li><a href="#">Litecoin</a></li>
+                        <li><a href="#">Chainlink</a></li>
+                        <li><a href="#">Polkadot</a></li>
+                        <li><a href="#">Ripple</a></li>
+                        <li><a href="#">Tether</a></li>
+                        <li><a href="#">Dogecoin</a></li>
+                        <li><a href="#">ZCash</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="ca__right-column">
+                <div class="ca__crypto-cloud">
+                    <div class="ca__icon1"></div>
+                    <div class="ca__icon2"></div>
+                    <div class="ca__icon3"></div>
+                    <div class="ca__icon4"></div>
+                    <div class="ca__icon5"></div>
+                    <div class="ca__icon6"></div>
+                    <div class="ca__icon7"></div>
+                    <div class="ca__icon8"></div>
+                    <div class="ca__icon-portal"></div>
+                    <div class="ca__icon-portal right_cone"></div>
+                    <div class="ca__icon-portal right_cone_bottom"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="crypto__calculator" data-aos="animation">
+        <div class="crypto__calculator-title">
+            <h3>Profit calculator</h3>
+            <p>Discover how much can you earn using the profitability calculator</p>
+        </div>
+        <div id="crypto__form-calculator">
+            <form action="">
+                <div class="crypto__form-topbar">
+                    <div class="crypto__inner-form">
+                        <ul class="crypto__column-items">
+                            <li class="crypto__column-item">
+                                <div class="crypto__item-container">
+                                    <div class="crypto__item-label">Invest currency:</div>
+                                    <div class="crypto__item-input drop__menu invest_calc">
+                                        <i class="select__crypto crypto-bg-item14 crypto-logo-item14"></i>
+                                        <input type="text" value="" placeholder="Bitcoin" />
+                                        <span style="display: none;" id="invest_curr" class="short-name">btc</span>
+                                        <div class="crypto__drop-down-list">
+                                            <ul>
+                                                <li short-name="bch">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item1 crypto-logo-item1"></i>
+                                                        Bitcoin Cash</div>
+                                                </li>
+                                                <li short-name="ada">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item2 crypto-logo-item2"></i>
+                                                        Cardano</div>
+                                                </li>
+                                                <li short-name="link">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item3 crypto-logo-item3"></i>
+                                                        Chainilink</div>
+                                                </li>
+                                                <li short-name="doge">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item4 crypto-logo-item4"></i>
+                                                        Dogecoin</div>
+                                                </li>
+                                                <li short-name="etc">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item5 crypto-logo-item5"></i>
+                                                        EthClassic</div>
+                                                </li>
+                                                <li short-name="eth">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item6 crypto-logo-item6"></i>
+                                                        Ethereum</div>
+                                                </li>
+                                                <li short-name="ltc">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item7 crypto-logo-item7"></i>
+                                                        Litecoin (LTC)</div>
+                                                </li>
+                                                <li short-name="dot">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item8 crypto-logo-item8"></i>
+                                                        Polkadot</div>
+                                                </li>
+                                                <li short-name="xrp">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item9 crypto-logo-item9"></i>
+                                                        Ripple</div>
+                                                </li>
+                                                <li short-name="shib">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item10 crypto-logo-item10"></i>
+                                                        Shiba</div>
+                                                </li>
+                                                <li short-name="usdt">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item11 crypto-logo-item11"></i>
+                                                        Teather</div>
+                                                </li>
+                                                <li short-name="trx">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item12 crypto-logo-item12"></i>
+                                                        Tron</div>
+                                                </li>
+                                                <li short-name="zec">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item13 crypto-logo-item13"></i>
+                                                        ZCash</div>
+                                                </li>
+                                                <li short-name="btc">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item14 crypto-logo-item14"></i>
+                                                        Bitcoin</div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="crypto__column-item">
+                                <div class="crypto__item-container">
+                                    <div class="crypto__item-label">Number days:</div>
+                                    <div class="crypto__item-input">
+                                        <i class="crypto__calendar-icon"></i><input id="calc_days" type="text" value=""
+                                            placeholder="0" />
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="crypto__column-item">
+                                <div class="crypto__item-container">
+                                    <div class="crypto__item-label">Mining currency:</div>
+                                    <div class="crypto__item-input drop__menu mining_calc">
+                                        <i class="select__crypto crypto-bg-item14 crypto-logo-item14"></i>
+                                        <input type="text" value="" placeholder="Bitcoin" />
+                                        <span style="display: none;" id="mining_curr" class="short-name">btc</span>
+                                        <div class="crypto__drop-down-list">
+                                            <ul>
+                                                <li short-name="bch">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item1 crypto-logo-item1"></i>
+                                                        Bitcoin Cash</div>
+                                                </li>
+                                                <li short-name="ada">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item2 crypto-logo-item2"></i>
+                                                        Cardano</div>
+                                                </li>
+                                                <li short-name="link">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item3 crypto-logo-item3"></i>
+                                                        Chainilink</div>
+                                                </li>
+                                                <li short-name="doge">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item4 crypto-logo-item4"></i>
+                                                        Dogecoin</div>
+                                                </li>
+                                                <li short-name="etc">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item5 crypto-logo-item5"></i>
+                                                        EthClassic</div>
+                                                </li>
+                                                <li short-name="eth">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item6 crypto-logo-item6"></i>
+                                                        Ethereum</div>
+                                                </li>
+                                                <li short-name="ltc">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item7 crypto-logo-item7"></i>
+                                                        Litecoin (LTC)</div>
+                                                </li>
+                                                <li short-name="dot">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item8 crypto-logo-item8"></i>
+                                                        Polkadot</div>
+                                                </li>
+                                                <li short-name="xrp">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item9 crypto-logo-item9"></i>
+                                                        Ripple</div>
+                                                </li>
+                                                <li short-name="shib">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item10 crypto-logo-item10"></i>
+                                                        Shiba</div>
+                                                </li>
+                                                <li short-name="usdt">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item11 crypto-logo-item11"></i>
+                                                        Teather</div>
+                                                </li>
+                                                <li short-name="trx">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item12 crypto-logo-item12"></i>
+                                                        Tron</div>
+                                                </li>
+                                                <li short-name="zec">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item13 crypto-logo-item13"></i>
+                                                        ZCash</div>
+                                                </li>
+                                                <li short-name="btc">
+                                                    <div class="crypto__select-item"><i
+                                                            class="select__crypto crypto-bg-item14 crypto-logo-item14"></i>
+                                                        Bitcoin</div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="crypto__form-middle">
+                    <div class="crypto__range-section-title">Deposit amount:</div>
+
+                    <div class="mining-range-row" id="crypto__calculator-item">
+                        <input type="text" step="0.00000001" max="" value="1" name="quantity" class="quantity-field"
+                            id="js-amount-input" style="position:absolute; left:0; top:-30px; z-index:20;">
+
+                        <div class="minin-rangeslider">
+                            <input type="range" id="js-amount-range" value="0" min="0" step="0.00000001" max="40000">
+                        </div>
+                    </div>
+                </div>
+                <div class="crypto__form-bottom">
+                    <ul class="crypto__final-list">
+                        <li class="crypto__item-column">
+                            <div class="crypto__item-row-box">
+                                <div class="label__item-row">Profit Amount</div>
+                                <div class="title__item-row" id="retcalc_profit">0 LTC</div>
+                            </div>
+                        </li>
+                        <li class="crypto__item-column">
+                            <div class="crypto__item-row-box">
+
+                                                                <div style="margin-bottom: 12px;" class="main__screen-button"><span
+                                        class="sign__up-button">Get Started</span></div>
+                                <p>Sign up bonus $5 in Miners</p>
+                                
+                            </div>
+                        </li>
+                        <li class="crypto__item-column">
+                            <div class="crypto__item-row-box">
+                                <div class="label__item-row">Daily profit</div>
+                                <div class="title__item-row" id="retcalc_perday">2%</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </section>
+</article>
+<div class="minin-crypto__slider" style="height: 60px;">
+    <ul class="crypto-items__slider">
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-bch crypto-logo-bch"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">BitcoinCash (BCH)</div>
+                    <div class="crypto-item-data">$
+                        129.19                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-ada crypto-logo-ada"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">Cardano (ADA)</div>
+                    <div class="crypto-item-data">$
+                        0.36                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-ltc crypto-logo-ltc"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">Litecoin (LTC)</div>
+                    <div class="crypto-item-data">$
+                        87.57                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-link crypto-logo-link"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">Chainlink (LINK)</div>
+                    <div class="crypto-item-data">$
+                        6.74                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-doge crypto-logo-doge"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">Dogecoin (DOGE)</div>
+                    <div class="crypto-item-data">$
+                        0.08                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-etc crypto-logo-etc"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">Ethereum Classic (ETC)</div>
+                    <div class="crypto-item-data">$
+                        21.23                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-eth crypto-logo-eth"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">Ethereum (ETH)</div>
+                    <div class="crypto-item-data">$
+                        1551.51                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-dot crypto-logo-dot"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">Polkadot (DOT)</div>
+                    <div class="crypto-item-data">$
+                        6.20                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-xrp crypto-logo-xrp"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">Ripple (XRP)</div>
+                    <div class="crypto-item-data">$
+                        0.41                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-shib crypto-logo-shib"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">Shiba (SHIB)</div>
+                    <div class="crypto-item-data">$
+                        0.000011                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-usdt crypto-logo-usdt"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">Tether (USDT)</div>
+                    <div class="crypto-item-data">$
+                        1.00                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-trx crypto-logo-trx"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">Tron (TRX)</div>
+                    <div class="crypto-item-data">$
+                        0.06                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-zec crypto-logo-zec"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">Zcash (ZEC)</div>
+                    <div class="crypto-item-data">$
+                        44.49                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="crypto-item-body">
+                <div class="crypto-item-logo crypto-bg-btc crypto-logo-btc"></div>
+                <div class="crypto-item-details">
+                    <div class="crypto-item-title">Bitcoin (BTC)</div>
+                    <div class="crypto-item-data">$
+                        22659.00                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<article class="main__article-content">
+    <section id="get__reward" data-aos="animation">
+        <div class="gr__table-container">
+            <div class="gr__left-column">
+                <div class="gr__column-content">
+                    <h4>Get reward for partner activity</h4>
+                    <p>Our team has chosen an optimally profitable affiliate portfolio that will allow you to correctly
+                        distribute the percentage of remuneration for each replenishment of your referral, remuneration
+                        in the form of 15% - 5% of your partner's deposit, crediting is instant and occurs in the
+                        internal capacity of the project.</p>
+                    <div class="main__referral-link-box">
+                        <div class="main__ref-title">Your referral link:</div>
+                        <div class="referral__table-details-row">
+                            <button data-sharer="copy-link" onclick="copy_text_fun()"></button>
+                            <p id="referral__link">
+                                https://bliyzer.com/?ref=33af22                            </p>
+                        </div>
+                    </div>
+                    <ul class="gr__levels-list">
+                        <li>
+                            <div class="gr__level-item">
+                                <div class="gr__level-icon"><span>1</span></div>
+                                <div class="gr__level-text">
+                                    <p>Sign up bonus $5 in 500 Miners</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="gr__level-item">
+                                <div class="gr__level-icon"><span>2</span></div>
+                                <div class="gr__level-text">
+                                    <p>For registering your friend you get 1 Miner</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="gr__level-item">
+                                <div class="gr__level-icon"><span>3</span></div>
+                                <div class="gr__level-text">
+                                    <p>You will receive 15% in USDT on your balance from a friend's deposit</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="gr__level-item">
+                                <div class="gr__level-icon"><span>4</span></div>
+                                <div class="gr__level-text">
+                                    <p>You will receive 5% in USDT on your balance from a friend's deposit</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="gr__right-column">
+                <div class="gr__monet-itemA"></div>
+                <div class="gr__monet-itemB"></div>
+                <div class="ca__icon-portal"></div>
+            </div>
+        </div>
+    </section>
+</article>
+
+<div id="price__section" data-aos="animation">
+    <div class="price__wave"></div>
+    <div class="price__body">
+        <div class="price__article">
+            <h5>Pricing</h5>
+            <div class="price__subtitle">Has a variety of features that make it the best place to start trading</div>
+            <ul class="price__group-list">
+                <li class="price__item-column">
+                    <div class="price__item-container">
+                        <div class="price__top-list-section">
+                            <div class="price__column-title">Pricing and Profits</div>
+                            <div class="price__column-sub-title">Price for 1 miner</div>
+                            <div class="price__column-data">0.01 USD</div>
+                        </div>
+                        <ul class="price__table-price">
+                            <li><span>Per day:</span> <span>Hashrate:</span></li>
+                            <li><span>2 %:</span> <span>500 Miners</span></li>
+                            <li><span>2.3 %:</span> <span>1 000 Miners</span></li>
+                            <li><span>2.8 %:</span> <span>3 000 Miners</span></li>
+                            <li><span>3.3 %:</span> <span>7 000 Miners</span></li>
+                            <li><span>3.5 %:</span> <span>15 000 Miners</span></li>
+                            <li><span>4 %:</span> <span>30 000 Miners</span></li>
+                            <li><span>4.5 %:</span> <span>70 000 Miners</span></li>
+                            <li><span>5 %:</span> <span>150 000 Miners</span></li>
+                            <li><span>5.5 %:</span> <span>300 000 Miners</span></li>
+                            <li><span>6 %:</span> <span>505 000 Miners</span></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <div class="price__button">
+
+                                <a style="cursor: pointer;" class="sign__up-button">Get Started</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<article class="main__article-content">
+    <section id="faq__section" data-aos="animation">
+        <h6>Frequently Asked Questions</h6>
+        <ul class="faq__list">
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> How to become a partner of Bliyzer mining
+                            company? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> To become our partner, you just need to go through a simple registration and get free 5$!
+                        </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> What to do immediately after registration? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> You need to log into your account, then go to the mining page and activate your mining.
+                            Mining will be active and will bring you profit.To increase your daily income, make a
+                            deposit. </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> Is there an affiliate program on the project? If so, where can
+                            I find my referral link. How can I find information about my referrals? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> The project has a two-level affiliate program, your referral link, all information about the
+                            referral program, as well as promotional materials you can find in the "Referral program"
+                            section. </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> What is a level and how can i increase it? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> Bliyzer marketing is designed using levels. The more power a user buys, the
+                            higher his level is. The profitability depends directly on the level obtained. If initially
+                            the user receives 2% per day, then with the increase in the available power for mining the
+                            profitability can grow up to 6% per day. </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> How to find out what profit I will receive and what is my
+                            level? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> To find out your daily profit you can use the calculator on the main page. <br>
+                            1 Level 2 % = 500 Miners<br>
+                            2 Level 2.3 % = 1 000 Miners<br>
+                            3 Level 2.8 % = 3 000 Miners<br>
+                            4 Level 3.3 % = 7 000 Miners<br>
+                            5 Level 3.5 % = 15 000 Miners<br>
+                            6 Level 4 % = 30 000 Miners<br>
+                            7 Level 4.5 % = 70 000 Miners<br>
+                            8 Level 5 % = 150 000 Miners<br>
+                            9 Level 5.5 % = 300 000 Miners<br>
+                            10 Level 6 % = 505 000 Miners<br>
+                        </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> What payment systems are available on the project? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> You can use such payment systems as: BITCOIN, ETHEREUM, BINANCE COIN, LITECOIN, DOGECOIN,
+                            DASH, BITCOINCASH, ZCASH, RIPPLE, STELLAR, TRON, TETHER(TRC-20),  TETHER(BEP-20) </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> How do I make a deposit? How do I top up my balance? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> To make a deposit, you need to log into your account, then go to the mining page and at the
+                            top you will see the "Deposit" button. After going to the deposit page, select the currency
+                            of which you will make a deposit. After that, you will be given a wallet address to which
+                            you need send cryptocurrency. The deposit will be credited within 1 hour. </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> What is the minimum deposit amount? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> You can deposit with any amount of cryptocurrency. There are no restrictions. But do not
+                            forget about the commission of your crypto wallets for sending. </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> I made a deposit, but I did not receive mining power. What
+                            should I do? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> Power will be credited automatically to your balance immediately after your deposit is
+                            credited to the platform wallet. </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> I can't activate mining? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> To activate mining, go to the "mining" page. Select the currency you want to earn and drag
+                            the slider to the right. It is possible to mine several currencies at the same time. </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> What is the minimum withdrawal amount? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> 0.0005 BTC, 1.2 DOT, 850000 SHIB, 0.26 ETC, 20 ADA, 40 XRP, 0.07 BCH, 0.15 LTC, 1.35 LINK,
+                            0.008 ETH, 10 USDT, 150 DOGE, 0.16 ZEC, 150 TRX </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> I want to make a withdrawal, how do I do it? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> Log in to your account. Go to the "withdraw" page. Click on the "Withdrawal" button. Select
+                            the currency you want to withdraw, specify the withdrawal amount and enter your wallet
+                            address. </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> I made a withdrawal request, but it has not yet arrived in my
+                            wallet? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> All requests are processed by a group of operators in manual mode. The request is usually
+                            processed within 5-30 minutes. In some cases, a withdrawal request can be processed within
+                            48 hours. </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> Does the acquired power make a profit when I close the site?
+                        </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> The cryptocurrency mining power is located on a mining farm, therefore, your equipment
+                            cannot affect cryptocurrency mining in any way. You can close the site and turn off your
+                            device. If your power is set to mine any currency in your personal account, you will make a
+                            profit according to the marketing. </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> What if I forgot my account password? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> Use the "Forgot Password" feature on the "Login" tab. Enter the e-mail address you used to
+                            register your account. A new password will be sent to your e-mail. After that, check your
+                            spam folder in your e-mail. </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> Can i create multiple accounts? </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> The user is allowed to have only one account. If this rule is violated, the administration
+                            has the right to block the user without explanation. </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> Your account can be blocked in the following situations! </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> Bliyzer takes a responsible approach to protecting the personal data of its
+                            users, as well as the security of its site. Any attempts to collect users' personal
+                            information, hacking of the site code, unfair use of the affiliate program, gaining access
+                            to user accounts through hacking, using third-party services to artificially increase the
+                            number of partners, as well as any insults to the administration of the site or its users
+                            may become a reason for suspension of the user account. </p>
+                    </div>
+                </div>
+            </li>
+            <li class="faq__item">
+                <div class="faq__item-body">
+                    <div class="faq__item-question">
+                        <div class="faq__icon"></div>
+                        <div class="faq__question-text"> I didn't find the answer to my question, what should I do?
+                        </div>
+                    </div>
+                    <div class="faq__unswer">
+                        <p> Contact the support service, it can be a mailbox or a telegram message. </p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        </div>
+</article>
+<footer class="main__footer">
+    <div class="footer__article">
+        <div class="header__logotype"><a href="/mining">Bliyzer</a></div>
+        <nav class="main__navigation">
+            <ul class="nav__list">
+                <li><a href="#how_it-work">How it works</a></li>
+                <li><a href="#crypto__calculator">Calculator</a></li>
+                <li><a href="#get__reward">Referral</a></li>
+                <li><a href="#price__section">Pricing</a></li>
+                <li><a href="#faq__section">FAQ</a></li>
+            </ul>
+        </nav>
+        <div class="user__section-nav">
+            <ul class="user__navigation">
+                <li class="user__sign-section">
+                                            <div class="user__sin-ing-button"><span>Sign in</span></div>
+                                       
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="main__footer-copyright">&copy; Bliyzer Platform 2023, All Rights Reserved</div>
+</footer>
+
+
+<div class="modal__overflow signiIn__modal">
+    <div class="modal__container">
+        <div class="modal__title">
+            <h3>Login</h3>
+        </div><i class="close__modal"></i>
+        <div class="modal__form">
+			<form id="Login" method="get" class="contact__form">
+                <div class="modal__form-item">
+                    <div class="modal__item-box-label">Username or Email:</div>
+                    <div class="modal__item-box-input center">
+						<input id="login-email" name="email" type="text" value="" placeholder="">
+					</div>
+                </div>
+                <div class="modal__form-item">
+                    <div class="modal__item-box-label">Password:</div>
+                    <div class="modal__item-box-input center">
+						<input id="login-pass" type="password" name="password" value="" placeholder="">
+					</div>
+                </div>
+				<div class="captcha">
+                    <div class="mx-auto recaptcha g-recaptcha" data-sitekey="6Les0O0jAAAAAD6_YbNyO1GPK9WAz3-tWFXlDQqB" style=""></div>
+                </div>
+				<div id="login-error"
+                    style="margin-bottom: 20px; margin-top: 20px; text-align: center; color: #ED4337; font-family: 'Neometric', sans-serif; font-weight: 600;">
+                </div>
+                <div class="modal__form-bottom">
+                    <button><span>Login</span></button>
+                </div>
+                <div class="modal__forgot-link">Forget password?</div>
+                <div class="modal__line"><span>OR</span></div>
+                <div class="modal__create-button"><span>CREATE ACCOUNT</span></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal__overflow signiUp__modal">
+    <div class="modal__container">
+        <div class="modal__title">
+            <h3>Create account</h3>
+        </div><i class="close__modal"></i>
+        <div class="modal__form">
+			<form id="Registration" class="contact__form">
+                <div class="modal__form-item">
+                    <div class="modal__item-box-label">Username:</div>
+                    <div class="modal__item-box-input center">
+						<input id="reg-login" name="login" type="text" name="name" value="" placeholder="">
+					</div>
+                </div>
+                <div class="modal__form-item">
+                    <div class="modal__item-box-label">You email:</div>
+                    <div class="modal__item-box-input center">
+						<input id="reg-email" name="email" type="text" name="name" value="" placeholder="">
+					</div>
+                </div>
+                <div class="modal__form-item">
+                    <div class="modal__item-box-label">Password:</div>
+                    <div class="modal__item-box-input center">
+						<input id="reg-pass" name="password" type="password" value="" placeholder="">
+					</div>
+                </div>
+                <div class="modal__form-item">
+                    <div class="modal__item-box-label">Confirm password:</div>
+                    <div class="modal__item-box-input center">
+						<input id="reg-pass-2" name="password_2" type="password" name="email" value="" placeholder="">
+					</div>
+                </div>
+				<div class="captcha">
+                        <div class="mx-auto recaptcha g-recaptcha" data-sitekey="6Les0O0jAAAAAD6_YbNyO1GPK9WAz3-tWFXlDQqB" style=""></div>
+                </div>
+				<div id="reg-error"
+                    style="margin-bottom: 20px; margin-top: 20px; text-align: center; color: #ED4337; font-family: 'Neometric', sans-serif; font-weight: 600;">
+                </div>
+                <div class="modal__form-bottom">
+                    <button><span>Create account and get $5 bonus</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal__overflow modal__forgot">
+    <div class="modal__container">
+        <div class="modal__title">
+            <h3>Recover password</h3>
+        </div><i class="close__modal"></i>
+        <div class="modal__form">
+			<form id="Recovery" class="contact__form">
+                <div class="modal__form-item">
+                    <div class="modal__item-box-label">Enter your email:</div>
+                    <div class="modal__item-box-input center">
+						<input type="text" name="name" value="" placeholder="">
+					</div>
+                </div>
+				<div class="captcha">
+                    <div class="mx-auto recaptcha g-recaptcha" data-sitekey="6Les0O0jAAAAAD6_YbNyO1GPK9WAz3-tWFXlDQqB" style=""></div>
+                </div>
+				<div id="rec-error"
+                    style="margin-bottom: 20px; margin-top: 20px; text-align: center; color: #1E69FF;  font-family: 'Neometric', sans-serif; font-weight: 600;">
+                </div>
+                <div class="modal__form-bottom">
+                    <button><span>Recover</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+   
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="js/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.0/rangeslider.min.js"></script>
+<link rel="stylesheet" href="css/rangeslider.css">
+<script src="js/slick.min.js"></script>
+<script src="js/aos.js"></script>
+<script>
+AOS.init({
+    easing: 'ease-in-out-sine'
+});
+</script>
+<script>
+var $root = $('html, body');
+
+$('a[href^="#"]').click(function() {
+    $root.animate({
+        scrollTop: $($.attr(this, 'href')).offset().top
+    }, 500);
+
+    return false;
+});
+
+function copy_text_fun() {
+    //getting text from P tag
+    var copyText = document.getElementById("referral__link");
+    // creating textarea of html
+    var input = document.createElement("textarea");
+    //adding p tag text to textarea 
+    input.value = copyText.textContent;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand("Copy");
+    // removing textarea after copy
+    input.remove();
+
+}
+$('.crypto-items__slider').slick({
+    infinite: true,
+    centerMode: true,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    variableWidth: true,
+    autoplay: true,
+    arrows: false,
+    dots: false,
+});
+/// Main range slider
+var $rangeslider = $('#js-amount-range');
+var $amount = $('#js-amount-input');
+
+$rangeslider
+    .rangeslider({
+        polyfill: false
+    })
+    .on('input', function() {
+        let temp = this.value;
+        $amount[0].value = temp;
+        calculator();
+    });
+
+$amount.on('input', function() {
+    let temp = parseFloat($(this).val().replace(',', '.'));
+    
+    if(!temp){
+        temp = 0;
+    }
+
+    $rangeslider.val(temp).change();
+});
+$(".user__sin-ing-button").click(function() {
+    $(".signiIn__modal").toggleClass("visible");
+});
+$(".close__modal").click(function() {
+    $(".modal__overflow ").removeClass("visible");
+});
+$(".modal__create-button,.sign__up-button").click(function() {
+    $(".signiIn__modal ").removeClass("visible");
+    $(".signiUp__modal").toggleClass("visible");
+});
+$(".modal__forgot-link").click(function() {
+    $(".signiIn__modal ").removeClass("visible");
+    $(".modal__forgot").toggleClass("visible");
+});
+$(".crypto__item-input.drop__menu").click(function() {
+    $(".crypto__item-input.drop__menu").removeClass("active");
+    $(this).addClass("active");
+});
+
+$(".mining_calc .crypto__drop-down-list ul li").click(function() {
+    
+    $(".mining_calc").removeClass("active");
+    $(".mining_calc i").first().remove();
+    $(this).find('i').clone().prependTo(".mining_calc");
+    $(".mining_calc input").attr('placeholder',$(this).text().trim());
+    $(".mining_calc input").val('');
+    $(".mining_calc li").show();
+
+    var short_name = $(this).attr('short-name');
+    $('#mining_curr').text(short_name);
+    
+    calculator();
+
+});
+
+$(".mining_calc input").keyup(function () {  
+    
+    let val = $(".mining_calc input").val();
+    $( ".mining_calc .crypto__select-item" ).each(function() {
+        let li  = $(this).text().trim().toLowerCase();
+        if(li.indexOf(val) >= 0){
+            $(this).parent().show();
+        }
+        else{
+            $(this).parent().hide();
+        }
+    });
+
+});
+
+$(".invest_calc .crypto__drop-down-list ul li").click(function() {
+    
+    $(".invest_calc").removeClass("active");
+    $(".invest_calc i").first().remove();
+    $(this).find('i').clone().prependTo(".invest_calc");
+    $(".invest_calc input").attr('placeholder',$(this).text().trim());
+    $(".invest_calc input").val('');
+    $(".invest_calc li").show();
+
+    var short_name = $(this).attr('short-name');
+    $('#invest_curr').text(short_name);
+
+    calculator();
+
+});
+
+$(".invest_calc input").keyup(function () {  
+    
+    let val = $(".invest_calc input").val();
+    $( ".invest_calc .crypto__select-item" ).each(function() {
+        let li  = $(this).text().trim().toLowerCase();
+        if(li.indexOf(val) >= 0){
+            $(this).parent().show();
+        }
+        else{
+            $(this).parent().hide();
+        }
+    });
+
+});
+
+$(".faq__item").click(function() {
+    $(this).toggleClass("active");
+});
+jQuery(function($) {
+    $(document).mouseup(function(e) {
+        var div = $(".crypto__item-input.drop__menu.active");
+        if (!div.is(e.target)
+            &&
+            div.has(e.target).length === 0) { 
+            $('.crypto__item-input.drop__menu.active').removeClass('active');
+        }
+    });
+});
+</script>
